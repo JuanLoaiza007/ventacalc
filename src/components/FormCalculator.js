@@ -91,7 +91,7 @@ function FormCalculator({onUpdateForm}) {
       <dic className='card-footer text-center'>
         <button 
         type='submit' 
-        className='btn btn-warning m-2 rounded-5'
+        className='btn btn-danger m-2 rounded-5'
         onClick={reloadForm}>
           Limpiar
         </button>
