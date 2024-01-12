@@ -4,10 +4,15 @@ function FormCalculator({onUpdateForm}) {
   const initialFormValues = {
     paquetesQueso: 0,
     paquetesSencillos: 0,
-    masa: 0
+    masa: 0,
+    medidaMasa: "Libras",
   };
 
   const [formState, setFormState] = useState(initialFormValues);
+
+  useEffect(() => {
+    functionButtonMasa("btnLibras");
+  }, []);
 
   useEffect(() => {
     console.log(formState)
@@ -39,6 +44,57 @@ function FormCalculator({onUpdateForm}) {
   function reloadForm() {
     document.getElementById("main-form").reset();
     setFormState(initialFormValues);  
+    functionButtonMasa("btnLibras");
+  }
+
+  function functionButtonMasa(id) {
+    const classNameSelected = "btn btn-warning m-2 rounded-5"
+    const classNameUnselected = "btn btn-outline-warning m-2 rounded-5 text-secondary"
+
+    var btnLibras = document.getElementById("btnLibras");
+    var btnKilos = document.getElementById("btnKilos");
+    var btnDinero = document.getElementById("btnDinero");
+
+    function activeBtnLibras(){
+      btnLibras.className = classNameUnselected;
+      btnLibras.disabled = false;
+    }
+
+    function activeBtnKilos(){
+      btnKilos.className = classNameUnselected;
+      btnKilos.disabled = false;
+    }
+
+    function activeBtnDinero(){
+      btnDinero.className = classNameUnselected;
+      btnDinero.disabled = false;
+    }
+
+    function medidaSelect(nuevaMedida) {
+      setFormState((prevState) => ({
+        ...prevState,
+        medidaMasa: nuevaMedida
+      }));
+    }
+
+    if (id === "btnLibras") {
+      activeBtnKilos();
+      activeBtnDinero();
+      medidaSelect("Libras");
+      
+    } else if (id === "btnKilos") {
+      activeBtnLibras();
+      activeBtnDinero();
+      medidaSelect("Kilos");
+    } else if (id === "btnDinero") {
+      activeBtnLibras();
+      activeBtnKilos();
+      medidaSelect("Dinero");
+    }
+
+    var btnActual = document.getElementById(id);
+    btnActual.className = classNameSelected;
+    btnActual.disabled = true;
   }
   
 
@@ -75,7 +131,7 @@ function FormCalculator({onUpdateForm}) {
                   onChange={handleInput}></input>
                 </div>
                 <div className='form-group my-2'>
-                <p className='h6 mt-2'>Masa (libras)</p>
+                  <p className='h6 mt-2'>Masa</p>
                   <input 
                   type='text'
                   inputMode='numeric'
@@ -83,6 +139,28 @@ function FormCalculator({onUpdateForm}) {
                   className='form-control text-center' 
                   placeholder='0'
                   onChange={handleInput}></input>
+                  <p className='h6 mt-2'>Medida de masa</p>
+                  <button 
+                  type="button" 
+                  id="btnLibras"          
+                  className="btn btn-outline-warning m-2 rounded-5"
+                  onClick={() => functionButtonMasa("btnLibras")}>
+                    Libras
+                  </button>
+                  <button 
+                  type="button" 
+                  id="btnKilos"
+                  className="btn btn-outline-warning m-2 rounded-5"
+                  onClick={() => functionButtonMasa("btnKilos")}>
+                    Kilos
+                  </button>
+                  <button 
+                  type="button" 
+                  id="btnDinero"
+                  className="btn btn-outline-warning m-2 rounded-5"
+                  onClick={() => functionButtonMasa("btnDinero")}>
+                    $$$
+                  </button>
                 </div>
               </form> 
           </div>
