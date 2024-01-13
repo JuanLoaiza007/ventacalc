@@ -104,7 +104,7 @@ function FormCalculator({onUpdateForm}) {
         <h4 className='p-2'> Calculadora de ventas </h4>
       </div>       
       <div className='row justify-content-center text-center'>
-          <div className='col-md-5 col-sm-12'>
+          <div className='col-md-9 col-sm-12'>
             <form 
               id='main-form'
               className='card-body'

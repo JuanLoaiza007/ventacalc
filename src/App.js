@@ -4,16 +4,17 @@ import './App.css';
 import Navigation from './components/Navigation';
 import FormCalculator from './components/FormCalculator';
 import Statistics from './components/Statistics';
+import Footer from './components/Footer';
 
 import initialFormValues from "./defaultFormState.json";
 import defaultPricesValues from "./defaultPrices.json";
 
-import logo from './logo.svg';
+import imagenes from './images/imagenes'
 
 function App() {
   const [appState, setAppState] = useState({
-    "appName": "VentaCalc",
-    "version": "0.1"
+    "appName": "Ventacalc",
+    "appVersion": "1.0"
   });
 
   const [formState, setFormState] = useState(initialFormValues);
@@ -27,16 +28,16 @@ function App() {
     <div className="App">
       <Navigation
         appName={appState.appName} 
+        logoApp = {imagenes.logoApp}
       />
-
-      <div className='container my-2'>
+      <div className='container my-auto'>
         <div className='row'>
           <div className='col-lg-4 col-md-12'>
             <FormCalculator
               onUpdateForm={handleUpdateForm}
             />
           </div>
-          <div className='col-lg-8 col-md-12'>
+          <div className='col-lg-8 col-md-12 my-auto'>
             <Statistics 
               paquetesQueso = {formState.paquetesQueso} 
               paquetesSencillos = {formState.paquetesSencillos} 
@@ -48,6 +49,10 @@ function App() {
             />
           </div>
         </div>
+      </div>
+      <div id='footerMain'>
+        <Footer
+          appVersion = {appState.appVersion} />
       </div>
     </div>
   );
