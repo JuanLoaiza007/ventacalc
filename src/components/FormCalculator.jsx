@@ -13,7 +13,6 @@ export default function FormCalculator () {
 
   useEffect(() => {
     const handleInput = (e) => {
-      console.log('must update state')
       let { name, value } = e.target
       if (isParseableNumber(e)) {
         value = parseInt(e.target.value)
