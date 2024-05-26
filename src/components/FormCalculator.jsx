@@ -1,3 +1,4 @@
+// [FormCalculator.jsx]
 import React, { useEffect } from 'react'
 import { FormState } from '../states/FormState'
 import { isParseableNumber } from '../utils/numberUtils'

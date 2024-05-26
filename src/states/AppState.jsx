@@ -1,3 +1,4 @@
+// [AppState.jsx]
 import { create } from 'zustand'
 
 export const AppState = create((set) => ({
