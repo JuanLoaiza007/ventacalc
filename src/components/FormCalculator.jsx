@@ -1,33 +1,47 @@
 // [FormCalculator.jsx]
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { FormState } from '../states/FormState'
 import { isParseableNumber } from '../utils/numberUtils'
 
 export default function FormCalculator () {
   const useFormState = FormState()
+  const inputRefs = useRef({})
 
   useEffect(() => {
     functionButtonMasa('btnLibras')
   }, [])
 
-  function handleInput (e) {
-    let { name, value } = e.target
-    if (isParseableNumber(e)) {
-      value = parseInt(e.target.value)
-    } else {
-      value = 0
+  useEffect(() => {
+    const handleInput = (e) => {
+      console.log('must update state')
+      let { name, value } = e.target
+      if (isParseableNumber(e)) {
+        value = parseInt(e.target.value)
+      } else {
+        value = 0
+      }
+
+      if (name === 'paquetesQueso') {
+        useFormState.setPaquetesQueso(value)
+      } else if (name === 'paquetesSencillos') {
+        useFormState.setPaquetesSencillos(value)
+      } else if (name === 'masa') {
+        useFormState.setMasa(value)
+      } else if (name === 'medidaMasa') {
+        useFormState.setMedidaMasa(value)
+      }
     }
 
-    if (name === 'paquetesQueso') {
-      useFormState.setPaquetesQueso(value)
-    } else if (name === 'paquetesSencillos') {
-      useFormState.setPaquetesSencillos(value)
-    } else if (name === 'masa') {
-      useFormState.setMasa(value)
-    } else if (name === 'medidaMasa') {
-      useFormState.setMedidaMasa(value)
+    for (const inputRef of Object.values(inputRefs.current)) {
+      inputRef.addEventListener('input', handleInput)
     }
-  }
+
+    return () => {
+      for (const inputRef of Object.values(inputRefs.current)) {
+        inputRef.removeEventListener('input', handleInput)
+      }
+    }
+  }, [useFormState])
 
   function reloadForm () {
     document.getElementById('main-form').reset()
@@ -110,7 +124,7 @@ export default function FormCalculator () {
                 name='paquetesQueso'
                 className='form-control text-center'
                 placeholder='0'
-                onChange={handleInput}
+                ref={(el) => (inputRefs.current.paquetesQueso = el)}
               />
             </div>
             <div className='form-group'>
@@ -121,7 +135,7 @@ export default function FormCalculator () {
                 name='paquetesSencillos'
                 className='form-control text-center'
                 placeholder='0'
-                onChange={handleInput}
+                ref={(el) => (inputRefs.current.paquetesSencillos = el)}
               />
             </div>
             <div className='form-group my-2'>
@@ -132,7 +146,7 @@ export default function FormCalculator () {
                 name='masa'
                 className='form-control text-center'
                 placeholder='0'
-                onChange={handleInput}
+                ref={(el) => (inputRefs.current.masa = el)}
               />
               <p className='h6 mt-2'>Medida de masa</p>
               <button
@@ -165,7 +179,6 @@ export default function FormCalculator () {
       </div>
       <div className='card-footer text-center'>
         <button
-          type='submit'
           className='btn btn-danger m-2 rounded-5'
           onClick={reloadForm}
         >
