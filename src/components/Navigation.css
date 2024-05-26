@@ -1,0 +1,17 @@
+.navigation-container {
+  text-align: center;
+  align-items: center;
+  user-select: none;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  user-select: none;
+  pointer-events: none;
+}
+
+.app-name {
+  color: white;
+  font-size: 1.4rem;
+}
