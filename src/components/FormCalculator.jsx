@@ -1,51 +1,36 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { FormState } from '../states/FormState'
+import { isParseableNumber } from '../utils/numberUtils'
 
-export default function FormCalculator ({ onUpdateForm }) {
-  const initialFormValues = {
-    paquetesQueso: 0,
-    paquetesSencillos: 0,
-    masa: 0,
-    medidaMasa: 'Libras'
-  }
-
-  const [formState, setFormState] = useState(initialFormValues)
+export default function FormCalculator () {
+  const useFormState = FormState()
 
   useEffect(() => {
     functionButtonMasa('btnLibras')
   }, [])
 
-  useEffect(() => {
-    console.log(formState)
-    onUpdateForm(formState)
-  }, [formState, onUpdateForm])
-
   function handleInput (e) {
     let { name, value } = e.target
-
     if (isParseableNumber(e)) {
       value = parseInt(e.target.value)
     } else {
       value = 0
     }
 
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
-
-  function isParseableNumber (e) {
-    const inputValue = e.target.value
-    const numericValue = inputValue.replace(/[^\d]/g, '')
-    const isNumber = !isNaN(parseInt(numericValue))
-    e.target.value = numericValue
-
-    return isNumber
+    if (name === 'paquetesQueso') {
+      useFormState.setPaquetesQueso(value)
+    } else if (name === 'paquetesSencillos') {
+      useFormState.setPaquetesSencillos(value)
+    } else if (name === 'masa') {
+      useFormState.setMasa(value)
+    } else if (name === 'medidaMasa') {
+      useFormState.setMedidaMasa(value)
+    }
   }
 
   function reloadForm () {
     document.getElementById('main-form').reset()
-    setFormState(initialFormValues)
+    useFormState.resetAll()
     functionButtonMasa('btnLibras')
   }
 
@@ -57,45 +42,55 @@ export default function FormCalculator ({ onUpdateForm }) {
     const btnKilos = document.getElementById('btnKilos')
     const btnDinero = document.getElementById('btnDinero')
 
-    function activeBtnLibras () {
-      btnLibras.className = classNameUnselected
-      btnLibras.disabled = false
+    const buttons = {
+      btnLibras: {
+        setActive: (btn) => {
+          btn.className = classNameSelected
+          btn.disabled = true
+        },
+        reset: () => {
+          btnKilos.className = classNameUnselected
+          btnDinero.className = classNameUnselected
+          btnKilos.disabled = false
+          btnDinero.disabled = false
+        },
+        medida: 'Libras'
+      },
+      btnKilos: {
+        setActive: (btn) => {
+          btn.className = classNameSelected
+          btn.disabled = true
+        },
+        reset: () => {
+          btnLibras.className = classNameUnselected
+          btnDinero.className = classNameUnselected
+          btnLibras.disabled = false
+          btnDinero.disabled = false
+        },
+        medida: 'Kilos'
+      },
+      btnDinero: {
+        setActive: (btn) => {
+          btn.className = classNameSelected
+          btn.disabled = true
+        },
+        reset: () => {
+          btnLibras.className = classNameUnselected
+          btnKilos.className = classNameUnselected
+          btnLibras.disabled = false
+          btnKilos.disabled = false
+        },
+        medida: 'Dinero'
+      }
     }
 
-    function activeBtnKilos () {
-      btnKilos.className = classNameUnselected
-      btnKilos.disabled = false
-    }
+    const activeButton = buttons[id]
+    const otherButtons = Object.values(buttons).filter((button) => button !== activeButton)
 
-    function activeBtnDinero () {
-      btnDinero.className = classNameUnselected
-      btnDinero.disabled = false
-    }
+    otherButtons.forEach((button) => button.reset())
+    activeButton.setActive(document.getElementById(id))
 
-    function medidaSelect (nuevaMedida) {
-      setFormState((prevState) => ({
-        ...prevState,
-        medidaMasa: nuevaMedida
-      }))
-    }
-
-    if (id === 'btnLibras') {
-      activeBtnKilos()
-      activeBtnDinero()
-      medidaSelect('Libras')
-    } else if (id === 'btnKilos') {
-      activeBtnLibras()
-      activeBtnDinero()
-      medidaSelect('Kilos')
-    } else if (id === 'btnDinero') {
-      activeBtnLibras()
-      activeBtnKilos()
-      medidaSelect('Dinero')
-    }
-
-    const btnActual = document.getElementById(id)
-    btnActual.className = classNameSelected
-    btnActual.disabled = true
+    useFormState.setMedidaMasa(activeButton.medida)
   }
 
   return (

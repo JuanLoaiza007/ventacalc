@@ -5,20 +5,25 @@ import {
   calculatePaquetesSencillosCost,
   calculateTotalCost
 } from '../utils/calculateCosts'
+import { FormState } from '../states/FormState'
+import { PricesState } from '../states/PricesState'
 import { calculateMasa } from '../utils/calculateMasa'
 
-export default function Statistics ({
-  paquetesQueso,
-  paquetesSencillos,
-  masa,
-  medidaMasa,
-  costoPaqueteQueso,
-  costoPaqueteSencillo,
-  costoPorLibraDeMasa
-}) {
+export default function Statistics () {
+  const useFormState = FormState()
+  const usePricesState = PricesState()
+
+  const paquetesQueso = useFormState.paquetesQueso
+  const paquetesSencillos = useFormState.paquetesSencillos
+  const masa = useFormState.masa
+  const medidaMasa = useFormState.medidaMasa
+
+  const costoPaqueteQueso = usePricesState.costoPaqueteQueso
+  const costoPaqueteSencillo = usePricesState.costoPaqueteSencillo
+  const costoPorLibraDeMasa = usePricesState.costoPorLibraDeMasa
+
   const costoTotalPaquetesQueso = calculatePaquetesQuesoCost(paquetesQueso, costoPaqueteQueso)
   const costoTotalPaquetesSencillos = calculatePaquetesSencillosCost(paquetesSencillos, costoPaqueteSencillo)
-
   const { masaLb, masaGr, costoMasa, cantidadMasa } = calculateMasa(masa, medidaMasa, costoPorLibraDeMasa)
 
   const mostrarEstadisticasMasa = masaLb !== 0
