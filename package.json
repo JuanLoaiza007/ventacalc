@@ -1,6 +1,6 @@
 {
   "name": "ventacalc",
-  "version": "1.1.0-alpha",
+  "version": "1.1.0-beta",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
