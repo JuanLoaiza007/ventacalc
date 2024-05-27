@@ -1,5 +1,9 @@
 # Ventacalc - Calculadora de Ventas para Negocio de Arepas
 
+<p align="center">
+  <img src="https://github.com/JuanLoaiza007/ventacalc/assets/116226390/2172be6d-90bb-433e-916d-7319edb5a724" alt="Imagen de la vista principal" width="800"/>
+</p>
+
 ## Descripción
 Ventacalc es una aplicación web diseñada para facilitar los calculos de ventas de un negocio de arepas. Esta herramienta permite calcular de manera eficiente el costo total de paquetes con queso, paquetes sencillos y masa utilizando medidas en libras, kilos y unidades monetarias.
 
